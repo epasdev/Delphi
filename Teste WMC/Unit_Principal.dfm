@@ -53,9 +53,6 @@ object Form_Principal: TForm_Principal
       'VendorLib=fbclient.dll'
       'VendorLibWin64=fbclient.dll'
       'VendorLibOsx=/Library/Frameworks/Firebird.framework/Firebird'
-      'Database=C:\Users\Eduardo\Desktop\Teste WMC\database.fdb'
-      'User_Name=sysdba'
-      'Password=masterkey'
       'Role=RoleName'
       'MaxBlobSize=-1'
       'LocaleCode=0000'
@@ -69,7 +66,6 @@ object Form_Principal: TForm_Principal
       'RoleName=RoleName'
       'ServerCharSet=WIN1252'
       'Trim Char=False')
-    Connected = True
     Left = 48
     Top = 32
   end

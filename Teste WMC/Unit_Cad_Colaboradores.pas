@@ -60,6 +60,7 @@ type
     procedure InsereAltera(TIPOOP: string);
     procedure TrazDados(cod_colab: integer);
     function StrToFloat_Universal(pText: string): Extended;
+    function ValidaCamposTag: Boolean;
   private
     { Private declarations }
   public
@@ -161,12 +162,8 @@ procedure TForm_Cad_Colaboradores.InsereAltera(TIPOOP: string);
 var
   CPF, fone, celular, salario: string;
 begin
-  if trim(edt_Cidade.Text) = '' then
-  begin
-    ShowMessage('Favor, selecionar uma cidade!');
-    edt_Cidade.SetFocus;
-    exit;
-  end;
+  if ValidaCamposTag then
+    Exit;
 
   if Trim(edt_Numero.Text) = '' then
     edt_Numero.Text := '0';
@@ -184,7 +181,6 @@ begin
       ParamByName('COMPLEMENTO').AsString := trim(edt_Complemento.Text);
       ParamByName('CIDADE').AsInteger := StrToInt(Trim(edt_CodCidade.Text));
       ParamByName('CEP').AsString := Trim(me_CEP.Text);
-
 
       me_CPF.EditMask := '';
       ParamByName('CPF').AsString := Trim(me_CPF.Text);
@@ -309,22 +305,69 @@ begin
     end;
   end;
   GetLocaleFormatSettings(LOCALE_SYSTEM_DEFAULT, lformatSettings);
-  if (lformatSettings.DecimalSeparator = EUROPEAN_ST) then
+  if (lformatSettings.DecimalSeparator = EUROPEAN_ST) and (lIsEuropean) then
   begin
-    if lIsEuropean then
-    begin
-      lFinalValue := StringReplace(pText, '.', ',', [rfIgnoreCase, rfReplaceAll]);
-    end;
-  end;
-  if (lformatSettings.DecimalSeparator = AMERICAN_ST) then
+    lFinalValue := StringReplace(pText, '.', ',', [rfIgnoreCase, rfReplaceAll]);
+  end else
+  if (lformatSettings.DecimalSeparator = AMERICAN_ST) and (lIsAmerican) then
   begin
-    if lIsAmerican then
-    begin
-      lFinalValue := StringReplace(pText, ',', '.', [rfIgnoreCase, rfReplaceAll]);
-    end;
-  end;
+    lFinalValue := StringReplace(pText, ',', '.', [rfIgnoreCase, rfReplaceAll]);
+  end else
+    lFinalValue := pText;
   pText := lFinalValue;
   Result := StrToFloat(pText, lformatSettings);
+end;
+
+function TForm_Cad_Colaboradores.ValidaCamposTag: Boolean;
+var
+  I: Integer;
+  EditMask : String;
+begin
+  for I := 0 to ComponentCount - 1 do
+  begin
+    if Components[I].ClassType = TEdit then
+      if (TEdit(Components[I]).Text = '') and (TEdit(Components[I]).Tag = 1) then
+      begin
+        Result := true;
+        ShowMessage('Campos obrigatórios não preenchidos!');
+        TEdit(Components[I]).TextHint := 'Campo Obrigatório';
+        TEdit(Components[I]).SetFocus;
+        Exit;
+      end;
+
+    if Components[I].ClassType = TMaskEdit then begin
+      EditMask := TMaskEdit(Components[I]).EditMask;
+      TMaskEdit(Components[I]).EditMask := '';
+      if (TMaskEdit(Components[I]).Text = '') and (TMaskEdit(Components[I]).Tag = 1) then
+      begin
+        Result := true;
+        ShowMessage('Campos obrigatórios não preenchidos!');
+        TEdit(Components[I]).TextHint := 'Campo Obrigatório';
+        TEdit(Components[I]).SetFocus;
+        TMaskEdit(Components[I]).EditMask := EditMask;
+        Exit;
+      end;
+    end;
+
+    if Components[I].ClassType = TComboBox then
+      if (TComboBox(Components[I]).Text = '') and (TComboBox(Components[I]).Tag = 1) then
+      begin
+        Result := true;
+        ShowMessage('Campos obrigatórios não preenchidos!');
+        TComboBox(Components[I]).TextHint := 'Campo Obrigatório';
+         TComboBox(Components[I]).SetFocus;
+        Exit;
+      end;
+
+    if Components[I].ClassType = TMemo then
+      if (TMemo(Components[I]).Text = '') and (TMemo(Components[I]).Tag = 1) then
+      begin
+        Result := true;
+        ShowMessage('Campos obrigatórios não preenchidos!');
+        TMemo(Components[I]).SetFocus;
+        Exit;
+      end;
+  end;
 end;
 
 end.

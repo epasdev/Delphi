@@ -96,6 +96,7 @@ object Form_Cad_Colaboradores: TForm_Cad_Colaboradores
       Text = '0'
     end
     object edt_NomeColaborador: TEdit
+      Tag = 1
       Left = 141
       Top = 35
       Width = 273
@@ -103,6 +104,7 @@ object Form_Cad_Colaboradores: TForm_Cad_Colaboradores
       TabOrder = 1
     end
     object me_RG: TMaskEdit
+      Tag = 1
       Left = 517
       Top = 35
       Width = 89
@@ -123,6 +125,7 @@ object Form_Cad_Colaboradores: TForm_Cad_Colaboradores
       Text = '(  )     -    '
     end
     object me_Celular: TMaskEdit
+      Tag = 1
       Left = 107
       Top = 75
       Width = 84
@@ -149,6 +152,7 @@ object Form_Cad_Colaboradores: TForm_Cad_Colaboradores
       TabOrder = 7
     end
     object edt_Salario: TEdit
+      Tag = 1
       Left = 430
       Top = 75
       Width = 121
@@ -156,6 +160,7 @@ object Form_Cad_Colaboradores: TForm_Cad_Colaboradores
       TabOrder = 8
     end
     object me_CPF: TMaskEdit
+      Tag = 1
       Left = 420
       Top = 35
       Width = 91
@@ -262,6 +267,7 @@ object Form_Cad_Colaboradores: TForm_Cad_Colaboradores
       OnKeyUp = edt_CodCidadeKeyUp
     end
     object edt_Cidade: TEdit
+      Tag = 1
       Left = 511
       Top = 85
       Width = 121
